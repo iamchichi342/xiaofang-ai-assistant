@@ -1,0 +1,59 @@
+{
+  "name": "xiaofang-ai-assistant",
+  "version": "1.0.0",
+  "private": true,
+  "description": "小方 AI 助手网页开发版与 Windows 桌面版",
+  "main": "desktop/main.cjs",
+  "scripts": {
+    "desktop": "electron .",
+    "package:source": "node desktop/zip-source.cjs",
+    "package:win:folder": "node desktop/build-windows.cjs",
+    "package:win:zip": "npm run package:win:folder && node desktop/zip-windows.cjs",
+    "package:win:installer": "electron-builder --win nsis --x64"
+  },
+  "devDependencies": {
+    "@electron/asar": "^3.4.1",
+    "@electron/get": "^3.1.0",
+    "bestzip": "^2.2.1",
+    "electron": "^39.2.3",
+    "electron-builder": "^26.0.12",
+    "extract-zip": "^2.0.1"
+  },
+  "build": {
+    "appId": "com.xiaofang.assistant",
+    "productName": "小方 AI 助手",
+    "asar": true,
+    "directories": {
+      "output": "release/installer"
+    },
+    "files": [
+      "desktop/**/*",
+      "src/**/*",
+      "styles/**/*",
+      "index.html",
+      "package.json"
+    ],
+    "win": {
+      "icon": "desktop/assets/app.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "小方 AI 助手"
+    }
+  },
+  "allowScripts": {
+    "electron@39.8.10": true,
+    "electron-winstaller@5.4.0": true
+  }
+}

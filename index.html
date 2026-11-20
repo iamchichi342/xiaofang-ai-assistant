@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f4f5f7" />
+    <title>机器人助手组件</title>
+    <link rel="stylesheet" href="./styles/global.css" />
+    <link rel="stylesheet" href="./styles/assistant.css" />
+    <link rel="stylesheet" href="./styles/menu.css" />
+    <link rel="stylesheet" href="./styles/panels.css" />
+    <link rel="stylesheet" href="./styles/chat.css" />
+    <link rel="stylesheet" href="./styles/desktop.css" />
+  </head>
+  <body>
+    <main class="demo-page">
+      <header class="demo-header">
+        <span class="demo-kicker">ASSISTANT COMPONENT</span>
+        <h1>一个会注意你的机器人助手</h1>
+        <p>移动鼠标观察视线，拖动机器人改变位置，点击机器人触发回应。</p>
+      </header>
+
+      <section class="demo-grid" aria-label="交互示例区域">
+        <article class="demo-panel demo-panel--primary">
+          <span class="panel-index">01</span>
+          <h2>视线先行</h2>
+          <p>靠近时眼睛快速锁定鼠标，机器人保持稳定。</p>
+        </article>
+        <article class="demo-panel">
+          <span class="panel-index">02</span>
+          <h2>远处跟随</h2>
+          <p>视线达到边界后，头部才开始缓慢转向。</p>
+        </article>
+        <article class="demo-panel">
+          <span class="panel-index">03</span>
+          <h2>状态反馈</h2>
+          <p>点击、拖动、空闲和重新聚焦都有不同反应。</p>
+        </article>
+      </section>
+
+      <section class="expression-lab" aria-labelledby="expression-title">
+        <div>
+          <span class="demo-kicker">EXPRESSION LAB</span>
+          <h2 id="expression-title">状态试验台</h2>
+          <p id="expression-description">选择一个状态，观察眼睛形状、头部姿态和动作如何协同。</p>
+        </div>
+        <div
+          class="expression-controls"
+          id="expression-controls"
+          role="group"
+          aria-label="机器人状态"
+        ></div>
+      </section>
+    </main>
+
+    <div id="assistant-root"></div>
+
+    <script src="./src/utils/math.js"></script>
+    <script src="./src/state.js"></script>
+    <script src="./src/data/expressions.js"></script>
+    <script src="./src/data/menu-items.js"></script>
+    <script src="./src/services/session-store.js"></script>
+    <script src="./src/services/api-client.js"></script>
+    <script src="./src/components/ScreenAssistant.js"></script>
+    <script src="./src/components/FunctionBall.js"></script>
+    <script src="./src/components/ContextMenu.js"></script>
+    <script src="./src/components/ApiPanel.js"></script>
+    <script src="./src/components/PersonaPanel.js"></script>
+    <script src="./src/components/ChatBubble.js"></script>
+    <script src="./src/main.js"></script>
+    <script src="./src/desktop-mode.js"></script>
+  </body>
+</html>

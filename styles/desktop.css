@@ -1,0 +1,25 @@
+html.desktop-mode,
+body.desktop-mode {
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  background: transparent;
+}
+
+body.desktop-mode .demo-page {
+  display: none;
+}
+
+body.desktop-mode #assistant-root {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+
+body.desktop-mode .screen-assistant,
+body.desktop-mode .assistant-chat[data-open="true"],
+body.desktop-mode .assistant-tool-panel[data-open="true"] {
+  pointer-events: auto;
+}
