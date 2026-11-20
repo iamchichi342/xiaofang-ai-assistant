@@ -2,6 +2,7 @@
   "name": "xiaofang-ai-assistant",
   "version": "1.0.0",
   "private": true,
+  "author": "iamchichi342",
   "description": "小方 AI 助手网页开发版与 Windows 桌面版",
   "main": "desktop/main.cjs",
   "scripts": {
@@ -9,7 +10,7 @@
     "package:source": "node desktop/zip-source.cjs",
     "package:win:folder": "node desktop/build-windows.cjs",
     "package:win:zip": "npm run package:win:folder && node desktop/zip-windows.cjs",
-    "package:win:installer": "electron-builder --win nsis --x64"
+    "package:win:installer": "electron-builder --win nsis --x64 --publish never"
   },
   "devDependencies": {
     "@electron/asar": "^3.4.1",
