@@ -22,6 +22,7 @@ async function zipSource() {
       "styles",
       ".gitignore",
       "CHANGELOG.md",
+      "LICENSE",
       "README.md",
       "index.html",
       "package-lock.json",
