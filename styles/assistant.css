@@ -242,6 +242,42 @@
   animation: assistant-peek 1150ms ease-in-out;
 }
 
+.screen-assistant[data-action="squish"] .screen-assistant__hit-area {
+  animation: assistant-squish 2900ms cubic-bezier(0.22, 0.72, 0.22, 1);
+}
+
+.screen-assistant__hand {
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  top: 50%;
+  width: 46px;
+  height: 46px;
+  border: 2px solid rgb(255 255 255 / 62%);
+  border-radius: 50%;
+  background: radial-gradient(circle at 34% 28%, #fff4ed 0 11%, #f3b49f 38%, #d88172 100%);
+  box-shadow: 0 9px 18px rgb(35 22 25 / 22%);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(78px, -122px) scale(1.2);
+  transform-origin: center;
+}
+
+.screen-assistant__hand span {
+  position: absolute;
+  left: 50%;
+  bottom: 7px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 56%);
+  transform: translateX(-50%);
+}
+
+.screen-assistant[data-action="squish"] .screen-assistant__hand {
+  animation: assistant-hand-touch 2900ms cubic-bezier(0.22, 0.72, 0.22, 1) forwards;
+}
+
 @keyframes assistant-bounce {
   0%,
   100% {
@@ -357,6 +393,65 @@
   }
 }
 
+@keyframes assistant-squish {
+  0%,
+  12% {
+    transform: translateY(0) scale(1);
+  }
+  18% {
+    transform: translateY(2px) scaleX(1.08) scaleY(0.92);
+  }
+  25% {
+    transform: translateY(-3px) scaleX(0.96) scaleY(1.06);
+  }
+  34% {
+    transform: translateY(1px) scaleX(1.1) scaleY(0.9);
+  }
+  43% {
+    transform: translateX(-4px) rotate(-2deg) scaleX(0.97) scaleY(1.04);
+  }
+  51% {
+    transform: translateX(4px) rotate(2deg) scaleX(1.03) scaleY(0.97);
+  }
+  59% {
+    transform: translateX(-3px) rotate(-1.5deg) scaleX(0.98) scaleY(1.02);
+  }
+  67% {
+    transform: translateX(3px) rotate(1.5deg) scaleX(1.02) scaleY(0.98);
+  }
+  76%,
+  100% {
+    transform: translate(0) rotate(0) scale(1);
+  }
+}
+
+@keyframes assistant-hand-touch {
+  0% {
+    opacity: 0;
+    transform: translate(78px, -122px) scale(1.2);
+  }
+  13% {
+    opacity: 1;
+    transform: translate(52px, -86px) scale(1.08);
+  }
+  27% {
+    opacity: 1;
+    transform: translate(32px, -23px) scale(0.58);
+  }
+  58% {
+    opacity: 0.96;
+    transform: translate(32px, -23px) scale(0.54);
+  }
+  76% {
+    opacity: 0.68;
+    transform: translate(28px, -27px) scale(0.48);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-10px, -34px) scale(0.38);
+  }
+}
+
 @media (max-width: 560px) {
   .screen-assistant {
     --assistant-size: 88px;
@@ -373,6 +468,10 @@
   }
 
   .screen-assistant__hit-area {
+    animation: none !important;
+  }
+
+  .screen-assistant__hand {
     animation: none !important;
   }
 }

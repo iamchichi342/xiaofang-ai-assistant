@@ -90,6 +90,9 @@
 
   contextMenu.mount();
 
+  const idleSceneManager = new window.AssistantIdleSceneManager(assistant);
+  idleSceneManager.mount();
+
   function openChat() {
     apiPanel.setOpen(false);
     personaPanel.setOpen(false);
@@ -239,6 +242,50 @@
     });
   }
 
+  const sceneControls = document.querySelector("#idle-scene-controls");
+  const sceneDescription = document.querySelector("#scene-description");
+  const sceneStatus = document.querySelector("#scene-status");
+
+  if (sceneControls && sceneDescription && sceneStatus) {
+    Object.entries(window.AssistantIdleScenes).forEach(([id, scene]) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "expression-control scene-control";
+      button.textContent = scene.label;
+      button.dataset.scene = id;
+      button.setAttribute("aria-pressed", "false");
+      button.title = scene.description;
+      button.addEventListener("click", () => {
+        sceneControls.querySelectorAll("button").forEach((item) => {
+          item.setAttribute("aria-pressed", String(item === button));
+        });
+        sceneDescription.textContent = scene.description;
+        sceneStatus.textContent = `正在测试：${scene.label}`;
+        idleSceneManager.preview(id);
+        window.setTimeout(() => {
+          if (!idleSceneManager.current) {
+            sceneStatus.textContent = "当前没有播放场景。";
+            button.setAttribute("aria-pressed", "false");
+          }
+        }, scene.duration + 1000);
+      });
+      sceneControls.append(button);
+    });
+
+    const stopButton = document.createElement("button");
+    stopButton.type = "button";
+    stopButton.className = "expression-control scene-control scene-control--stop";
+    stopButton.textContent = "停止场景";
+    stopButton.addEventListener("click", () => {
+      idleSceneManager.stop();
+      sceneControls.querySelectorAll("button").forEach((item) => {
+        item.setAttribute("aria-pressed", "false");
+      });
+      sceneStatus.textContent = "当前没有播放场景。";
+    });
+    sceneControls.append(stopButton);
+  }
+
   window.robotAssistant = assistant;
   window.robotAssistantApp = {
     assistant,
@@ -247,5 +294,6 @@
     personaPanel,
     chat,
     store,
+    idleSceneManager,
   };
 })();

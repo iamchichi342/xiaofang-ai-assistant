@@ -23,12 +23,14 @@ class ScreenAssistant {
     this.expressions = window.AssistantExpressions;
     this.state = createAssistantState();
     this.messageIndex = 0;
+    this.clickResponseIndex = 0;
     this.animationFrame = null;
     this.blinkTimer = null;
     this.idleActionTimer = null;
     this.manualIdleTimer = null;
     this.expressionTimer = null;
     this.actionTimer = null;
+    this.squishTimers = [];
     this.reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
     this.handleGlobalPointerMove = this.handleGlobalPointerMove.bind(this);
@@ -81,6 +83,7 @@ class ScreenAssistant {
             </span>
             <span class="screen-assistant__shine"></span>
           </span>
+          <span class="screen-assistant__hand" aria-hidden="true"><span></span></span>
         </button>
       </aside>
     `;
@@ -193,6 +196,7 @@ class ScreenAssistant {
 
   handlePointerDown(event) {
     if (event.button !== 0) return;
+    if (this.state.interaction.actionLocked) return;
 
     const rect = this.element.getBoundingClientRect();
     this.state.drag.active = true;
@@ -258,11 +262,14 @@ class ScreenAssistant {
 
   respond() {
     const message = this.options.messages[this.messageIndex];
-    const responseExpressions = ["joy", "curious", "surprise"];
-    const expression = responseExpressions[this.messageIndex];
+    const response = ["squish", "joy", "curious", "surprise"][
+      this.clickResponseIndex % 4
+    ];
     this.messageIndex = (this.messageIndex + 1) % this.options.messages.length;
+    this.clickResponseIndex += 1;
     this.showMessage(message);
-    this.setExpression(expression);
+    if (response === "squish") this.playSquishInteraction();
+    else this.setExpression(response);
   }
 
   showMessage(message) {
@@ -280,7 +287,11 @@ class ScreenAssistant {
   setExpression(name, options = {}) {
     const expression = this.expressions[name] ?? this.expressions.neutral;
     const resolvedName = this.expressions[name] ? name : "neutral";
-    const { announce = false, duration = expression.duration } = options;
+    const {
+      announce = false,
+      duration = expression.duration,
+      preserveAction = false,
+    } = options;
 
     window.clearTimeout(this.expressionTimer);
     this.state.expression.name = resolvedName;
@@ -289,11 +300,16 @@ class ScreenAssistant {
     this.element.dataset.expression = resolvedName;
     this.applyEyeExpression(expression.eye);
 
-    if (expression.action) {
-      this.playAction(expression.action);
-    } else {
-      window.clearTimeout(this.actionTimer);
-      this.element.dataset.action = "";
+    const shouldPreserveAction =
+      preserveAction || this.state.interaction.actionLocked;
+
+    if (!shouldPreserveAction) {
+      if (expression.action) {
+        this.playAction(expression.action);
+      } else {
+        window.clearTimeout(this.actionTimer);
+        this.element.dataset.action = "";
+      }
     }
 
     if (announce) {
@@ -338,7 +354,39 @@ class ScreenAssistant {
     this.element.dataset.action = name;
     this.actionTimer = window.setTimeout(() => {
       this.element.dataset.action = "";
-    }, name === "celebrate" ? 1500 : 1450);
+    }, { celebrate: 1500, squish: 2900 }[name] ?? 1450);
+  }
+
+  playSquishInteraction() {
+    if (this.state.interaction.actionLocked) return;
+
+    this.clearSquishTimers();
+    this.state.interaction.actionLocked = true;
+    this.setExpression("surprise", { duration: 0, preserveAction: true });
+    this.playAction("squish");
+
+    const phases = [
+      [420, () => this.setExpression("curious", { duration: 0, preserveAction: true })],
+      [980, () => this.setExpression("neutral", { duration: 0, preserveAction: true })],
+      [1560, () => this.setExpression("curious", { duration: 0, preserveAction: true })],
+      [2180, () => this.setExpression("joy", { duration: 0, preserveAction: true })],
+      [3100, () => this.finishSquishInteraction()],
+    ];
+
+    this.squishTimers = phases.map(([delay, callback]) =>
+      window.setTimeout(callback, delay),
+    );
+  }
+
+  finishSquishInteraction() {
+    this.clearSquishTimers();
+    this.state.interaction.actionLocked = false;
+    this.setExpression("neutral", { duration: 0 });
+  }
+
+  clearSquishTimers() {
+    this.squishTimers.forEach((timer) => window.clearTimeout(timer));
+    this.squishTimers = [];
   }
 
   scheduleIdleAction() {
@@ -351,6 +399,8 @@ class ScreenAssistant {
       if (
         idleFor > 4200 &&
         !this.state.drag.active &&
+        !this.state.interaction.actionLocked &&
+        !this.state.idle.sceneActive &&
         this.state.expression.name === "neutral"
       ) {
         const next =
@@ -527,6 +577,14 @@ class ScreenAssistant {
     this.state.gaze.active = true;
     this.state.gaze.x = target.x;
     this.state.gaze.y = target.y;
+  }
+
+  setIdleSceneActive(active) {
+    this.state.idle.sceneActive = Boolean(active);
+  }
+
+  isIdleActive() {
+    return this.state.idle.manual || this.state.idle.automatic;
   }
 
   clearGazeTarget() {

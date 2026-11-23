@@ -101,6 +101,7 @@ index.html            网页开发版入口
 - [Windows 桌面版说明](docs/Windows桌面版说明.md)
 - [机器人眼神交互教程](docs/机器人眼神交互教程.md)
 - [机器人表情动作定义](docs/机器人表情动作定义.md)
+- [闲置场景试验台](docs/闲置场景试验台.md)
 - [小方 AI 助手产品需求与交互规格](docs/网页AI小助手需求与交互规格.md)
 - [版本记录](CHANGELOG.md)
 

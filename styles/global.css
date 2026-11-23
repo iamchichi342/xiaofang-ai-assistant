@@ -120,6 +120,21 @@ button {
   border-bottom: 1px solid #aeb4bd;
 }
 
+.scene-lab {
+  border-bottom: 0;
+}
+
+.scene-lab__status {
+  min-height: 0 !important;
+  margin-top: 12px !important;
+  color: #3d434c !important;
+  font-size: 13px;
+}
+
+.scene-control--stop {
+  color: #a34747;
+}
+
 .expression-lab h2 {
   margin: 0 0 12px;
   font-size: 28px;

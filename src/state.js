@@ -38,6 +38,7 @@ function createAssistantState() {
     },
     interaction: {
       pressed: false,
+      actionLocked: false,
       speaking: false,
       bubbleTimer: null,
       lastPointerMoveAt: performance.now(),
@@ -46,6 +47,7 @@ function createAssistantState() {
       automatic: false,
       manual: false,
       manualUntil: 0,
+      sceneActive: false,
     },
     expression: {
       name: "neutral",

@@ -1,0 +1,117 @@
+.idle-scene-layer {
+  position: fixed;
+  z-index: 10020;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.idle-scene {
+  position: absolute;
+  overflow: hidden;
+}
+
+.idle-rainbow-flight,
+.idle-bird {
+  position: absolute;
+  left: 0;
+  top: 0;
+  will-change: transform;
+}
+
+.idle-rainbow-flight {
+  width: 118px;
+  height: 40px;
+}
+
+.idle-rainbow-square {
+  position: absolute;
+  left: 86px;
+  top: 0;
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  border: 0;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #ff6b6b 0 20%, #ffcc54 20% 40%, #71d68c 40% 60%, #64b5ff 60% 80%, #bd8cff 80%);
+  box-shadow: 0 9px 20px rgb(27 36 50 / 18%);
+}
+
+.idle-rainbow-square span {
+  position: absolute;
+  top: 11px;
+  width: 4px;
+  height: 7px;
+  border-radius: 999px;
+  background: #15171b;
+}
+
+.idle-rainbow-square span:first-child { left: 9px; }
+.idle-rainbow-square span:last-child { right: 9px; }
+
+.idle-rainbow-trail {
+  position: absolute;
+  left: 0;
+  top: 11px;
+  display: flex;
+  gap: 4px;
+  opacity: 0.82;
+}
+
+.idle-rainbow-trail i {
+  display: block;
+  width: 11px;
+  height: 8px;
+  border-radius: 999px;
+  transform: rotate(-8deg);
+}
+
+.idle-rainbow-trail i:nth-child(1) { background: #bd8cff; opacity: 0.24; }
+.idle-rainbow-trail i:nth-child(2) { background: #64b5ff; opacity: 0.34; }
+.idle-rainbow-trail i:nth-child(3) { background: #71d68c; opacity: 0.46; }
+.idle-rainbow-trail i:nth-child(4) { background: #ffcc54; opacity: 0.58; }
+.idle-rainbow-trail i:nth-child(5) { background: #ff9e5c; opacity: 0.72; }
+.idle-rainbow-trail i:nth-child(6) { background: #ff6b6b; opacity: 0.86; }
+
+.idle-scene[data-direction="-1"] .idle-rainbow-square {
+  left: 0;
+}
+
+.idle-scene[data-direction="-1"] .idle-rainbow-trail {
+  left: 32px;
+  flex-direction: row-reverse;
+}
+
+.idle-bird {
+  width: 34px;
+  height: 22px;
+  color: #4c5663;
+}
+
+.idle-bird svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  animation: idle-bird-flap 520ms ease-in-out infinite alternate;
+}
+
+.idle-bird path {
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-width: 2.4;
+}
+
+.idle-bird--two { color: #6c7785; }
+.idle-bird--three { color: #8792a0; }
+
+@keyframes idle-bird-flap {
+  from { transform: scaleY(0.74); }
+  to { transform: scaleY(1.08); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .idle-bird svg { animation: none; }
+}

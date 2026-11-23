@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="./styles/menu.css" />
     <link rel="stylesheet" href="./styles/panels.css" />
     <link rel="stylesheet" href="./styles/chat.css" />
+    <link rel="stylesheet" href="./styles/idle-scenes.css" />
     <link rel="stylesheet" href="./styles/desktop.css" />
   </head>
   <body>
@@ -51,6 +52,21 @@
           aria-label="机器人状态"
         ></div>
       </section>
+
+      <section class="expression-lab scene-lab" aria-labelledby="scene-title">
+        <div>
+          <span class="demo-kicker">IDLE SCENE LAB</span>
+          <h2 id="scene-title">闲置场景试验台</h2>
+          <p id="scene-description">点击按钮直接播放一个闲置场景，观察场景元素、眼神和表情是否协同。</p>
+          <p class="scene-lab__status" id="scene-status" role="status" aria-live="polite">当前没有播放场景。</p>
+        </div>
+        <div
+          class="expression-controls scene-controls"
+          id="idle-scene-controls"
+          role="group"
+          aria-label="闲置场景测试"
+        ></div>
+      </section>
     </main>
 
     <div id="assistant-root"></div>
@@ -58,6 +74,7 @@
     <script src="./src/utils/math.js"></script>
     <script src="./src/state.js"></script>
     <script src="./src/data/expressions.js"></script>
+    <script src="./src/data/idle-scenes.js"></script>
     <script src="./src/data/menu-items.js"></script>
     <script src="./src/services/session-store.js"></script>
     <script src="./src/services/api-client.js"></script>
@@ -67,6 +84,7 @@
     <script src="./src/components/ApiPanel.js"></script>
     <script src="./src/components/PersonaPanel.js"></script>
     <script src="./src/components/ChatBubble.js"></script>
+    <script src="./src/components/IdleSceneManager.js"></script>
     <script src="./src/main.js"></script>
     <script src="./src/desktop-mode.js"></script>
   </body>

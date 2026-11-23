@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const childProcess = require("child_process");
 const bestzip = require("bestzip");
 
 async function zipSource() {
@@ -9,25 +10,17 @@ async function zipSource() {
     fs.readFileSync(path.join(root, "package.json"), "utf8"),
   );
   const destination = `XiaofangAssistant-source-v${packageJson.version}.zip`;
+  const source = childProcess
+    .execFileSync("git", ["ls-files", "-z"], { cwd: root })
+    .toString("utf8")
+    .split("\0")
+    .filter(Boolean);
   fs.mkdirSync(releaseRoot, { recursive: true });
   fs.rmSync(path.join(releaseRoot, destination), { force: true });
 
   await bestzip.nodeZip({
     cwd: root,
-    source: [
-      ".github",
-      "desktop",
-      "docs",
-      "src",
-      "styles",
-      ".gitignore",
-      "CHANGELOG.md",
-      "LICENSE",
-      "README.md",
-      "index.html",
-      "package-lock.json",
-      "package.json"
-    ],
+    source,
     destination: path.join("release", destination),
     level: 9,
   });
